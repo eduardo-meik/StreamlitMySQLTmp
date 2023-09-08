@@ -1,18 +1,13 @@
+# main.py
+
 import streamlit as st
-from multipage import MultiApp
-from app import data, visualisasi, model, explanation
 
-app = MultiApp()
+# Initialize connection.
+conn = st.experimental_connection('mysql', type='sql')
 
-st.markdown("""
-Stramlit MySQL template app based on # FINAL PROJECT FGA 2021
+# Perform query.
+df = conn.query('SELECT * from mytable;', ttl=600)
 
-Bismillahirrahmanirrahim Semoga Berkah
-""")
-
-app.add_app("Data", data.app)
-app.add_app("Visualisasi", visualisasi.app)
-app.add_app("Model", model.app)
-app.add_app("Explanation", explanation.app)
-app.run()main.py
-
+# Print results.
+for row in df.itertuples():
+    st.write(f"{row.name} has a :{row.pet}:")
